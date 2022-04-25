@@ -1,0 +1,8 @@
+第三关
+
+' onclick ='javascript:alert(1)'>//
+
+这关将html实体化了，可以用新标签如onclick，onfocus等跳过
+
+
+弹窗成功！！！

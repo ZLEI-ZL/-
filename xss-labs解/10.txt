@@ -1,0 +1,12 @@
+第10关
+
+这关会有一个t_sort参数
+
+看源码后发现只过滤了<>
+
+利用onclick=alert(1)弹窗，type设成空，不能hidden
+
+?t_sort=" onclick=alert(1) type="'
+
+
+弹窗成功！！！

