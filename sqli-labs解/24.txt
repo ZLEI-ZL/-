@@ -1,0 +1,12 @@
+第24关
+二阶注入
+
+pass-change里的sql语句有漏洞，通过以下方式
+UPDATE users SET PASSWORD='$pass' where username= 'admin'  #' and password='$curr_pass' 
+
+首先注册一个id为admin'#的用户
+然后更改密码，通过以上sql语句可以看出，原密码被注释了，实际更改的是admin的密码
+
+
+
+闯关成功！！！

