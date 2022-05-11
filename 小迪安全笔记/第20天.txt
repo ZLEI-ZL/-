@@ -1,0 +1,38 @@
+第20天
+文件上传（高危）
+
+初识---验证/绕过---漏洞/修复（解析漏洞、CMS漏洞、编译器漏洞、CVE漏洞、安全修复）---WAF绕过
+
+归4类
+	常规类 （扫描获取，会员中心，后台系统，各种途径）
+	CMS类 （已知CMS源码）
+	编译器类 （ckeditor\fchkeditor\kindeditor\xxxxeditor）
+	其他类/CVE （代码审计、平台、三方）
+
+查找文件上传
+vulhub.org 靶机 漏洞环境
+
+解析漏洞 Nginx等
+
+改掉前端限制代码，增加action指向网站地址
+
+https://github.com/c0ny/upload-labs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

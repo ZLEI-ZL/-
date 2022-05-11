@@ -1,0 +1,36 @@
+第31天
+文件操作、文件包含漏洞
+
+文件包含原理
+asp\php\jsp\aspx等
+常见写法：
+<!--#include file="1.asp" -->
+<!--#include file="top.aspx" -->
+<c:import url="http://1.jsp">
+<jsp:include page="head.jsp"/>
+<%@ include file="head.jsp"%>
+<?php include('test.php')?>
+
+白盒、黑盒
+
+类型：本地包含、远程包含  本地文件包含通常读取配置文件
+远程包含危害更大一些
+
+利用 http ftp file
+
+有限制时：
+可以利用%00截断
+利用长度截断windows长度大于256  Linux大于4096
+
+远程连接可加？或者%20、%23绕过
+
+伪协议流玩法
+不同脚本有不同玩法
+php://input
+
+
+对网站
+源码分析
+中间件攻击
+漏扫工具
+

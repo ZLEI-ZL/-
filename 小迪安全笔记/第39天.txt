@@ -1,0 +1,32 @@
+第39天
+XXE&XML
+
+概念：
+	XML：传输和存储数据，DTD文档格式，焦点是数据内容，其把数据从HTML分离，独立于软件和硬件的信息传输工具。
+	XXE漏洞全称XML Extrenal Entity Injection xml外部实体注入漏洞。发生在应用程序解析XML输入时
+	，没有禁止外部实体的加载，导致可加载恶意外部文件。
+
+实例：pikachu靶场
+
+利用：有回显、无回显
+		过滤绕过
+无回显读取，dnslog 读本地日志
+
+绕过：编码、协议绕过
+
+XXE-labs靶场
+
+content-type 值
+数据格式类型判断
+更改content-type值
+
+爬数据包时发现有XML，在提交数据那里输入payload攻击
+
+
+vulnhub靶场 贴近实际
+
+工具：xxeinjector
+
+
+xxe防御
+禁用外部实体

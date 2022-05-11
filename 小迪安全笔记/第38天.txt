@@ -1,0 +1,13 @@
+第38天
+java反序列化
+
+Java反序列化工具：ysoserial
+
+序列化：ObjectOutputStream类——>writeObject()
+反序列化：ObjectInputStream类——>readObject()
+
+
+webgoat靶场
+
+黑盒涉及数据格式点：rO0AB、aced都是Java序列化的格式
+

@@ -1,0 +1,17 @@
+第40天
+java安全 jwt安全及预编译CASE注入
+
+访问控制
+身份验证
+客户端安全
+组件安全
+
+sql注入防御：通常用session或预编译
+case when绕过预编译
+
+JWT安全
+是一种跨越验证的方案
+json 结构：
+	eyJhbG...
+JWT通常采用hs256加密
+jwt.io
