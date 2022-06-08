@@ -1,0 +1,37 @@
+端口扫描
+nmap -A -p- 192.168.140.0/24
+192.168.140.139
+打开了22和80端口
+
+进入网站查看
+发现了admin用户名
+网站是drupal搭建
+
+
+admin  $S$D2tRcYRyqVFNSc0NvYUrYeQbLQg5koMKtihYTIDC9QQqJi3ICg5z
+john   $S$DqupvJbxVmqjr6cYePnx2A891ln7lsuku/3if/oRVZJaz5mKC2vF
+
+turtle           (john)  
+
+登录网站后台
+找到能写入php代码打地方
+写入系统反弹shell打代码
+利用kail netcat监听
+
+监听成功后获得低权限账户
+
+python -c 'import pty;pty.spawn("/bin/bash")'
+
+find / -perm -u=s -type f 2>/dev/null
+发现存在exim 4 这个可以用来提权
+
+searchspolit exim 4
+漏洞库搜索可以利用的漏洞
+
+利用wget将.sh脚本下载到目标机打/tmp目录
+chmod 777 filename.sh
+加入执行权限
+./ filename.sh -m netcat
+获得root权限
+进入root目录，获得flag
+结束！！！
