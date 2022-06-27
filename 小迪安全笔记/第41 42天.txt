@@ -1,0 +1,21 @@
+第41天
+java 目录遍历xss等安全问题
+
+第42天
+漏洞发现 操作系统漏洞发现
+操作系统本身有漏洞
+类型,做好预测
+
+探针工具：goby nmap nessus openvas nexpose
+nmap --script=vuln 默认nse插件
+nmap vulscan vulners
+
+漏洞类型：远程执行、权限提升、缓冲区溢出
+
+利用：metasploit searchsploit
+	单点exp：cnvd seebug 1377day exploit-db
+	
+修复：
+	打补丁
+	关闭入口
+	防护应用

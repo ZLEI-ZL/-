@@ -7,11 +7,20 @@ java安全 jwt安全及预编译CASE注入
 组件安全
 
 sql注入防御：通常用session或预编译
-case when绕过预编译
+case when绕过预编译 后边要有order by才可以，不然不行
 
-JWT安全
+JWT安全 json web token
 是一种跨越验证的方案
 json 结构：
 	eyJhbG...
 JWT通常采用hs256加密
 jwt.io
+
+jwt修改伪造攻击
+要注意删除掉base64的==，因为url会再次编码
+
+jwt密钥爆破攻击
+
+
+ctf真题
+ctfhub,easy_login题目
