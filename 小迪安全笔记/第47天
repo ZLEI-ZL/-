@@ -1,0 +1,25 @@
+第47天
+WAF绕过漏洞发现
+
+awvs
+xray
+appscan
+
+单点工具
+tpscan
+wpscan
+st2scan
+
+触发拦截
+速度
+工具指纹
+漏洞payload
+
+proxy_pool
+
+针对安全狗 采用延迟或白名单或代理池
+
+Xray + burp联动 user options
+burp 发包到Xray
+
+
